@@ -5,7 +5,7 @@ A RESTful API around the [PETRARCH](https://github.com/openeventdata/petrarch)
 event data coder. Using `docker compose`, this setup also integrates the 
 Stanford [CoreNLP](http://nlp.stanford.edu/software/corenlp.shtml) parser
 using Casey Hilland's [docker container](https://github.com/chilland/ccNLP).
-This setup allows the user to stream texts into the API, rather than the 
+This setup allows the users to stream texts into the API, rather than the 
 batch mode seen in applications such as the [Phoenix pipeline](https://github.com/openeventdata/phoenix_pipeline).
 
 Running
