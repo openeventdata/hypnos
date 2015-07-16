@@ -32,7 +32,7 @@ data = {'text': "At least 37 people are dead after Islamist radical group Boko
 Haram assaulted a town in northeastern Nigeria.", 'id': 'abc123', 'date':
 '20010101'}
 data = json.dumps(data)
-r = requests.get('http://localhost:5002/siesta/extract', data=data,
+r = requests.get('http://localhost:5002/hypnos/extract', data=data,
                  headers=headers)
 r.json()
 ```

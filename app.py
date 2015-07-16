@@ -70,7 +70,7 @@ def process_corenlp(output, date, STORYID):
 
     return event_dict
 
-api.add_resource(ExtractAPI, '/siesta/extract')
+api.add_resource(ExtractAPI, '/hypnos/extract')
 
 if __name__ == '__main__':
     http_server = HTTPServer(WSGIContainer(app))
