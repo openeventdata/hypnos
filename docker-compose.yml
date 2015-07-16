@@ -1,4 +1,4 @@
-siesta:
+hypnos:
     build: .
     links:
         - ccnlp
