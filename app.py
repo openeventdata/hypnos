@@ -51,7 +51,6 @@ class ExtractAPI(Resource):
         petr = os.environ['PETRARCH_PORT_5001_TCP_ADDR']
         petr_url = 'http://{}:5001/petrarch/code'.format(petr)
         events_r = requests.post(petr_url, data=events_data, headers=headers)
-        #event_updated = events_r.json()
         event_updated = process_results(events_r.json())
 
         return event_updated
