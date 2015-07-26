@@ -4,7 +4,7 @@ MAINTAINER John Beieler <jbeieler@caerusassociates.com>
 
 RUN apt-get update && apt-get install -y git python-dev python-pip 
 
-RUN pip install git+https://github.com/openeventdata/petrarch.git 
+RUN pip install https://github.com/openeventdata/petrarch/archive/0.3.0.zip
 
 ADD . /src
 
