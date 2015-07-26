@@ -48,11 +48,10 @@ class ExtractAPI(Resource):
         event_dict = process_corenlp(out, date, storyid)
 
         events_data = json.dumps({'events': event_dict})
-        print(events_data)
         petr = os.environ['PETRARCH_PORT_5001_TCP_ADDR']
         petr_url = 'http://{}:5001/petrarch/code'.format(petr)
         events_r = requests.post(petr_url, data=events_data, headers=headers)
-        event_updated = events_r.json()
+        event_updated = process_results(events_r.json())
 
         return event_updated
 
@@ -67,6 +66,18 @@ def process_corenlp(output, date, STORYID):
         event_dict[STORYID]['sents'][i] = {}
         event_dict[STORYID]['sents'][i]['content'] = ' '.join(sents[i]['tokens'])
         event_dict[STORYID]['sents'][i]['parsed'] = sents[i]['parse'].upper().replace(')', ' )')
+
+    return event_dict
+
+
+def process_results(event_dict):
+    for s_id in event_dict:
+        sents = event_dict[s_id]['sents']
+        for sent in sents:
+            if 'issues' not in sents[sent].keys():
+                sents[sent]['issues'] = []
+            if 'events' not in sents[sent].keys():
+                sents[sent]['events'] = []
 
     return event_dict
 
