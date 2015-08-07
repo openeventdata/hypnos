@@ -40,7 +40,7 @@ class ExtractAPI(Resource):
 
         headers = {'Content-Type': 'application/json'}
         core_data = json.dumps({'text': text})
-        ccnlp = os.environ['CCNLP_PORT_5000_TCP_ADDR']
+        ccnlp = os.environ.get('CCNLP_PORT_5000_TCP_ADDR')
         ccnlp_url = 'http://{}:5000/process'.format(ccnlp)
         r = requests.post(ccnlp_url, data=core_data, headers=headers)
         out = r.json()
@@ -48,7 +48,7 @@ class ExtractAPI(Resource):
         event_dict = process_corenlp(out, date, storyid)
 
         events_data = json.dumps({'events': event_dict})
-        petr = os.environ['PETRARCH_PORT_5001_TCP_ADDR']
+        petr = os.environ.get('PETRARCH_PORT_5001_TCP_ADDR')
         petr_url = 'http://{}:5001/petrarch/code'.format(petr)
         events_r = requests.post(petr_url, data=events_data, headers=headers)
         event_updated = process_results(events_r.json())

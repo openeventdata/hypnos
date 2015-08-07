@@ -1,0 +1,11 @@
+machine:
+  services:
+    - docker
+dependencies:
+  override:
+    - docker info
+    - docker build -t caerusassociates/hypnos .
+test:
+  post:
+    - docker run -d -p 5002:5002 caerusassociates/hypnos; sleep 10
+    - curl --retry 10 --retry-delay 5 -v http://localhost:5000/hypnos/extract

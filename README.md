@@ -1,3 +1,5 @@
+[![Circle CI](https://circleci.com/gh/caerusassociates/hypnos.svg?style=svg)](https://circleci.com/gh/caerusassociates/hypnos)
+
 hypnos
 ======
 
