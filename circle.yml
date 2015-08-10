@@ -9,3 +9,9 @@ test:
   post:
     - docker run -d -p 5002:5002 caerusassociates/hypnos; sleep 10
     - curl --retry 10 --retry-delay 5 -v http://localhost:5002/hypnos/extract
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push caerusassociates/hypnos
