@@ -13,7 +13,7 @@ batch mode seen in applications such as the [Phoenix pipeline](https://github.co
 Running
 -------
 
-Running the system is as simple as using
+Running the system is as simple as `cd`ing into the `hypos` directory and using
 
 `docker-compose up`
 
@@ -25,13 +25,15 @@ to run in the background.
 
 This assumes that you have `docker-compose` and `docker` installed.
 
-Usage
+Example Python Usage
 -----
 
 ```
+import requests
+import json
+
 headers = {'Content-Type': 'application/json'}
-data = {'text': "At least 37 people are dead after Islamist radical group Boko
-Haram assaulted a town in northeastern Nigeria.", 'id': 'abc123', 'date':
+data = {'text': "At least 37 people are dead after Islamist radical group Boko Haram assaulted a town in northeastern Nigeria.", 'id': 'abc123', 'date':
 '20010101'}
 data = json.dumps(data)
 r = requests.get('http://localhost:5002/hypnos/extract', data=data,
