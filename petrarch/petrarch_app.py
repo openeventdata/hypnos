@@ -1,5 +1,7 @@
 import os
-from petrarch import petrarch
+import sys
+import json
+from petrarch2 import petrarch2
 from tornado.ioloop import IOLoop
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
@@ -33,8 +35,11 @@ class CodeAPI(Resource):
         args = self.reqparse.parse_args()
         event_dict = args['events']
 
-        print(event_dict)
-        event_dict_updated = petrarch.do_coding(event_dict, None)
+        try:
+            event_dict_updated = petrarch2.do_coding(event_dict, None)
+        except Exception as e:
+            sys.stderr.write("An error occurred with PETR. {}\n".format(e))
+            event_dict_updated = event_dict
 
         return event_dict_updated
 
@@ -42,11 +47,11 @@ class CodeAPI(Resource):
 api.add_resource(CodeAPI, '/petrarch/code')
 
 if __name__ == '__main__':
-    config = petrarch.utilities._get_data('data/config/', 'PETR_config.ini')
+    config = petrarch2.utilities._get_data('data/config/', 'PETR_config.ini')
     print("reading config")
-    petrarch.PETRreader.parse_Config(config)
+    petrarch2.PETRreader.parse_Config(config)
     print("reading dicts")
-    petrarch.read_dictionaries()
+    petrarch2.read_dictionaries()
 
     http_server = HTTPServer(WSGIContainer(app))
     http_server.listen(5001)
