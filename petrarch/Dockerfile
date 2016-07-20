@@ -1,10 +1,10 @@
 FROM ubuntu:14.04
 
-MAINTAINER John Beieler <jbeieler@caerusassociates.com>
+MAINTAINER John Beieler <johnb30@gmail.com>
 
-RUN apt-get update && apt-get install -y git python-dev python-pip 
+RUN apt-get update && apt-get install -y git python-dev python-pip
 
-RUN pip install https://github.com/openeventdata/petrarch/archive/0.3.0.zip
+RUN pip install git+https://github.com/openeventdata/petrarch2.git
 
 ADD . /src
 

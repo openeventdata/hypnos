@@ -1,11 +1,13 @@
-hypnos:
-    build: .
-    links:
-        - ccnlp
-        - petrarch
-    ports:
-        - "5002:5002"
-ccnlp:
-    image: caerusassociates/ccnlp:1.0.0
-petrarch:
-    build: petrarch/.
+version: '2'
+services:
+    hypnos:
+        build: .
+        links:
+            - ccnlp
+            - petrarch
+        ports:
+            - "5002:5002"
+    ccnlp:
+        image: caerusassociates/ccnlp:1.0.0
+    petrarch:
+        build: petrarch/.
