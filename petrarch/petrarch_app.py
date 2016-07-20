@@ -1,6 +1,5 @@
 import os
 import sys
-import json
 from petrarch2 import petrarch2
 from tornado.ioloop import IOLoop
 from tornado.wsgi import WSGIContainer

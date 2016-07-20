@@ -72,7 +72,7 @@ def process_corenlp(output, date, STORYID):
     event_dict[STORYID]['sents'] = {}
     event_dict[STORYID]['meta'] = {}
     event_dict[STORYID]['meta']['date'] = date
-    for i, sent in enumerate(output['sentences']):
+    for i, _ in enumerate(output['sentences']):
         sents = output['sentences']
         event_dict[STORYID]['sents'][str(i)] = {}
         event_dict[STORYID]['sents'][str(i)]['content'] = ' '.join(sents[i]['tokens'])

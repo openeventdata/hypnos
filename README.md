@@ -1,9 +1,12 @@
 [![Circle CI](https://circleci.com/gh/caerusassociates/hypnos.svg?style=svg)](https://circleci.com/gh/caerusassociates/hypnos)
+[![Code Health](https://landscape.io/github/openeventdata/hypnos/petrarch2/landscape.svg?style=flat)](https://landscape.io/github/openeventdata/hypnos/petrarch2)
 
 hypnos
 ======
 
-A RESTful API around the [PETRARCH](https://github.com/openeventdata/petrarch)
+**Note: hypnos now works with PETRARCH2 by default.**
+
+A RESTful API around the [PETRARCH2](https://github.com/openeventdata/petrarch2)
 event data coder. Using `docker compose`, this setup also integrates the 
 Stanford [CoreNLP](http://nlp.stanford.edu/software/corenlp.shtml) parser
 using Casey Hilland's [docker container](https://github.com/chilland/ccNLP).

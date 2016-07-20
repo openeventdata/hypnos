@@ -1,6 +1,6 @@
+import json
 import requests
 from pymongo import MongoClient
-import json
 
 connection = MongoClient()
 db = connection.lexisnexis
@@ -16,17 +16,14 @@ junk = []
 headers = {'Content-Type': 'application/json'}
 
 for i in t:
-    data = {'text': i['article_body'],
-    'id': i['doc_id'], 'date':
-    '20010101'}
+    data = {'text': i['article_body'], 'id': i['doc_id'], 'date': '20010101'}
     data = json.dumps(data)
     r = requests.get('http://localhost:5002/hypnos/extract', data=data,
                      headers=headers)
     rj = r.json()
-    try:   # clunky check for key
-        rj['status'] 
+    if 'status' in rj:
         junk.append(rj)
-    except:
+    else:
         output.append(rj)
 
 
