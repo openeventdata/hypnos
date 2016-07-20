@@ -13,10 +13,13 @@ using Casey Hilland's [docker container](https://github.com/chilland/ccNLP).
 This setup allows the users to stream texts into the API, rather than the 
 batch mode seen in applications such as the [Phoenix pipeline](https://github.com/openeventdata/phoenix_pipeline).
 
+This software was developed by Caerus Associates and donated to the Open Event
+Data Alliance.
+
 Running
 -------
 
-Running the system is as simple as `cd`ing into the `hypos` directory and using
+Running the system is as simple as `cd`ing into the `hypnos` directory and using
 
 `docker-compose up`
 
