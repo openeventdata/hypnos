@@ -36,7 +36,7 @@ class CodeAPI(Resource):
         event_dict = args['events']
 
         try:
-            event_dict_updated = petrarch2.do_coding(event_dict, None)
+            event_dict_updated = petrarch2.do_coding(event_dict)
         except Exception as e:
             sys.stderr.write("An error occurred with PETR. {}\n".format(e))
             event_dict_updated = event_dict

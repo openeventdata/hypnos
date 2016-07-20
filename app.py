@@ -38,22 +38,33 @@ class ExtractAPI(Resource):
         storyid = args['id']
         date = args['date']
 
-        headers = {'Content-Type': 'application/json'}
-        core_data = json.dumps({'text': text})
-        ccnlp = os.environ.get('CCNLP_PORT_5000_TCP_ADDR')
-        ccnlp_url = 'http://{}:5000/process'.format(ccnlp)
-        r = requests.post(ccnlp_url, data=core_data, headers=headers)
-        out = r.json()
+        out = send_to_ccnlp(text)
 
         event_dict = process_corenlp(out, date, storyid)
 
-        events_data = json.dumps({'events': event_dict})
-        petr = os.environ.get('PETRARCH_PORT_5001_TCP_ADDR')
-        petr_url = 'http://{}:5001/petrarch/code'.format(petr)
-        events_r = requests.post(petr_url, data=events_data, headers=headers)
-        event_updated = process_results(events_r.json())
+        event_updated = send_to_petr(event_dict)
 
         return event_updated
+
+
+def send_to_ccnlp(text):
+    headers = {'Content-Type': 'application/json'}
+    core_data = json.dumps({'text': text})
+    ccnlp_url = 'http://ccnlp:5000/process'
+    r = requests.post(ccnlp_url, data=core_data, headers=headers)
+    out = r.json()
+
+    return out
+
+
+def send_to_petr(event_dict):
+    headers = {'Content-Type': 'application/json'}
+    events_data = json.dumps({'events': event_dict})
+    petr_url = 'http://petrarch:5001/petrarch/code'
+    events_r = requests.post(petr_url, data=events_data, headers=headers)
+    event_updated = process_results(events_r.json())
+
+    return event_updated
 
 
 def process_corenlp(output, date, STORYID):
@@ -63,9 +74,9 @@ def process_corenlp(output, date, STORYID):
     event_dict[STORYID]['meta']['date'] = date
     for i, sent in enumerate(output['sentences']):
         sents = output['sentences']
-        event_dict[STORYID]['sents'][i] = {}
-        event_dict[STORYID]['sents'][i]['content'] = ' '.join(sents[i]['tokens'])
-        event_dict[STORYID]['sents'][i]['parsed'] = sents[i]['parse'].upper().replace(')', ' )')
+        event_dict[STORYID]['sents'][str(i)] = {}
+        event_dict[STORYID]['sents'][str(i)]['content'] = ' '.join(sents[i]['tokens'])
+        event_dict[STORYID]['sents'][str(i)]['parsed'] = sents[i]['parse'].upper().replace(')', ' )')
 
     return event_dict
 
