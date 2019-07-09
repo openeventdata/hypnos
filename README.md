@@ -36,29 +36,59 @@ Example Python Usage
 
 ```
 import requests
-import json
+import json 
+from pprint import pprint
 
 headers = {'Content-Type': 'application/json'}
-data = {'text': "At least 37 people are dead after Islamist radical group Boko Haram assaulted a town in northeastern Nigeria.", 'id': 'abc123', 'date':
-'20010101'}
+data = {'text':"A Tunisian court has jailed a Nigerian student for two years for helping young militants join an armed Islamic group in Lebanon, his lawyer said Wednesday.", 'id': 'abc123', 'date':'20010101'}
 data = json.dumps(data)
-r = requests.get('http://localhost:5002/hypnos/extract', data=data,
-                 headers=headers)
-r.json()
+r = requests.get('http://localhost:5002/hypnos/extract', data=data, headers=headers)
+pprint(r.json())
 ```
 
 Returns:
 
 ```
-{u'abc123': {u'meta': {u'date': u'20010101'},
-  u'sents': {u'0': {u'content': u'At least 37 people are dead after Islamist
-  radical group Boko Haram assaulted a town in northeastern Nigeria .',
-      u'events': [[u'NGAREBMUS', u'NGA', u'190']],
-          u'issues': [[u'ID_EXTREMISM', 1], [u'NAMED_TERROR_GROUP', 1]],
-              u'parsed': u'(ROOT (S (NP (QP (IN AT ) (JJS LEAST ) (CD 37 ) )
-              (NNS PEOPLE ) ) (VP (VBP ARE ) (ADJP (JJ DEAD ) ) (SBAR (IN AFTER
-              ) (S (NP (JJ ISLAMIST ) (JJ RADICAL ) (NN GROUP ) (NNP BOKO )
-              (NNP HARAM ) ) (VP (VBD ASSAULTED ) (NP (NP (DT A ) (NN TOWN ) )
-              (PP (IN IN ) (NP (JJ NORTHEASTERN ) (NNP NIGERIA ) ) ) ) ) ) ) )
-              (. . ) ) )'}}}}
+{'abc123': {'meta': {'date': '20010101', 'verbs': []},
+            'sents': {'0': {'content': 'A Tunisian court has jailed a Nigerian '
+                                       'student for two years for helping '
+                                       'young militants join an armed Islamic '
+                                       'group in Lebanon , his lawyer said '
+                                       'Wednesday .',
+                            'events': [['TUNJUD', 'NGAEDU', '173']],
+                            'issues': [['STUDENTS', 1],
+                                       ['NAMED_TERROR_GROUP', 1]],
+                            'meta': {'actorroot': [['', '']],
+                                     'actortext': [['Tunisian court',
+                                                    'Nigerian student']],
+                                     'eventtext': ['has jailed'],
+                                     'nouns': [[[' TUNISIAN', ' COURT'],
+                                                ['TUNJUD'],
+                                                [['TUN', []], ['~']]],
+                                               [[' NIGERIAN', ' STUDENT'],
+                                                ['NGAEDU'],
+                                                [['NGA', []], ['~']]],
+                                               [[' ARMED ISLAMIC GROUP'],
+                                                ['DZAREB'],
+                                                [['DZAREB', []]]],
+                                               [[' LEBANON'],
+                                                ['LBN'],
+                                                [['LBN', []]]],
+                                               [[' LAWYER'],
+                                                ['~JUD'],
+                                                [['~']]]]},
+                            'parsed': '(SBAR (S (NP (DT A )  (JJ TUNISIAN )  '
+                                      '(NN COURT )  )  (VP (VBZ HAS )  (VP '
+                                      '(VBN JAILED )  (NP (DT A )  (JJ '
+                                      'NIGERIAN )  (NN STUDENT )  )  (PP (IN '
+                                      'FOR )  (NP (CD TWO )  (NNS YEARS )  )  '
+                                      ')  (PP (IN FOR )  (S (VP (VBG HELPING '
+                                      ')  (NP (JJ YOUNG )  (NNS MILITANTS )  '
+                                      ')  )  )  )  )  )  )  (S (VP (VBP JOIN '
+                                      ')  (NP (DT AN )  (JJ ARMED )  (JJ '
+                                      'ISLAMIC )  (NN GROUP )  )  (PP (IN IN '
+                                      ')  (NP (NNP LEBANON )  )  )  )  )  (, , '
+                                      ')  (S (NP (PRP$ HIS )  (NN LAWYER )  )  '
+                                      '(VP (VBD SAID )  (NP (NNP WEDNESDAY )  '
+                                      ')  )  )  (. . )  )  '}}}}
 ```
