@@ -12,6 +12,11 @@ api = Api(app)
 
 cwd = os.path.abspath(os.path.dirname(__file__))
 
+config = petrarch2.utilities._get_data('data/config/','PETR_config.ini')
+petrarch2.PETRreader.parse_Config(config)
+petrarch2.read_dictionaries()
+#print(config)
+#print(getattr(petrarch2,"VerbDict"))
 
 @app.errorhandler(400)
 def bad_request(error):
@@ -39,6 +44,21 @@ class CodeAPI(Resource):
         except Exception as e:
             sys.stderr.write("An error occurred with PETR. {}\n".format(e))
             event_dict_updated = event_dict
+        
+        for key in event_dict_updated:
+            event_dict_updated[key]['meta']['verbs']=[]
+            for sent in event_dict_updated[key]['sents']:
+                try:
+                    temp_meta = event_dict_updated[key]['sents'][sent]['meta']
+                    event_dict_updated[key]['sents'][sent]['meta']={'actortext':list(temp_meta['actortext'].values()),
+                        'eventtext':list(temp_meta['eventtext'].values()),
+                        'nouns':temp_meta['nouns'],
+                        'actorroot':list(temp_meta['actorroot'].values())}
+                except:
+                    event_dict_updated[key]['sents'][sent]['meta']={'actortext':[[]],
+                            'eventtext':[[]],
+                            'nouns':[],
+                            'actorroot':[[]]}
 
         return event_dict_updated
 
@@ -46,11 +66,11 @@ class CodeAPI(Resource):
 api.add_resource(CodeAPI, '/petrarch/code')
 
 if __name__ == '__main__':
-    config = petrarch2.utilities._get_data('data/config/', 'PETR_config.ini')
-    print("reading config")
-    petrarch2.PETRreader.parse_Config(config)
-    print("reading dicts")
-    petrarch2.read_dictionaries()
+    #config = petrarch2.utilities._get_data('data/config/', 'PETR_config.ini')
+    #print("reading config")
+    #petrarch2.PETRreader.parse_Config(config)
+    #print("reading dicts")
+    #petrarch2.read_dictionaries()
 
     http_server = HTTPServer(WSGIContainer(app))
     http_server.listen(5001)
