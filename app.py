@@ -22,6 +22,17 @@ def bad_request(error):
 def not_found(error):
     return make_response(jsonify({'error': 'Not found'}), 404)
 
+def format_parsed_str(parsed_str):
+    if parsed_str.strip().startswith("(ROOT") and parsed_str.strip().endswith(")"):
+        parsed_str = parsed_str.strip()[5:-1].strip()
+    elif parsed_str.strip()[1:].strip().startswith("("):
+        parsed_str = parsed_str.strip()[1:-1]
+    parsed = parsed_str.split('\n')
+    parsed = [line.strip() + ' ' for line in [line1.strip() for line1 in
+                                              parsed if line1] if line]
+    parsed = [line.replace(')', ' ) ').upper() for line in parsed]
+    treestr = ''.join(parsed)
+    return treestr
 
 class ExtractAPI(Resource):
     def __init__(self):
@@ -39,9 +50,8 @@ class ExtractAPI(Resource):
         date = args['date']
 
         out = send_to_ccnlp(text)
-
+        
         event_dict = process_corenlp(out, date, storyid)
-
         event_updated = send_to_petr(event_dict)
 
         return event_updated
@@ -62,7 +72,7 @@ def send_to_petr(event_dict):
     events_data = json.dumps({'events': event_dict})
     petr_url = 'http://petrarch:5001/petrarch/code'
     events_r = requests.post(petr_url, data=events_data, headers=headers)
-    event_updated = process_results(events_r.json())
+    event_updated = events_r.json()
 
     return event_updated
 
@@ -73,10 +83,10 @@ def process_corenlp(output, date, STORYID):
     event_dict[STORYID]['meta'] = {}
     event_dict[STORYID]['meta']['date'] = date
     for i, _ in enumerate(output['sentences']):
-        sents = output['sentences']
+        sent = output['sentences'][i]
         event_dict[STORYID]['sents'][str(i)] = {}
-        event_dict[STORYID]['sents'][str(i)]['content'] = ' '.join(sents[i]['tokens'])
-        event_dict[STORYID]['sents'][str(i)]['parsed'] = sents[i]['parse'].upper().replace(')', ' )')
+        event_dict[STORYID]['sents'][str(i)]['content'] = ' '.join(sent['tokens'])
+        event_dict[STORYID]['sents'][str(i)]['parsed'] = format_parsed_str(sent['parse'])
 
     return event_dict
 
